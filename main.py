@@ -1,4 +1,4 @@
-
+import requests
 from flask import Flask, request, jsonify
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
@@ -11,7 +11,7 @@ def SentimentAnalyzer(str):
 
     response = ''
     sia = SentimentIntensityAnalyzer()
-    sentiment = sia.polarity_scores(text)
+    sentiment = sia.polarity_scores(str)
 
     if sentiment['compound'] > 0:
         response = 'this is positive'
@@ -23,7 +23,7 @@ def SentimentAnalyzer(str):
         response = 'this is neutral'
         print('neutral')
     return response
-SentimentAnalyzer(text)
+#SentimentAnalyzer(text)
 
 # route
 app = Flask(__name__)
@@ -36,9 +36,14 @@ def analyze_sentiment():
 
         if text:
             sia_response = SentimentAnalyzer(text)
-            return jsonify(sia_response)
+            result = {'result': sia_response}
+            return jsonify(result)
         else:
             return jsonify({'error': 'Please provide a "text" parameter in the request.'}), 400
+        
+ 
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
