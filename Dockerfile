@@ -8,14 +8,21 @@ WORKDIR /app
 COPY main.py /app/
 COPY requirements.txt /app/
 
-# Download NLTK data (vader_lexicon)
-#RUN python -m nltk.downloader vader_lexicon
+# Install the required packages
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential \
+    && pip install --no-cache-dir -r requirements.txt \
+    && apt-get purge -y build-essential \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Make port 5000 available to the world outside this container
+# Download NLTK data (vader_lexicon)
+RUN python -m nltk.downloader vader_lexicon -d /usr/share/nltk_data
+
+# Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-# Define environment variable
-ENV FLASK_APP=main.py
-
 # Run main.py when the container launches
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["python", "main.py"]
+
