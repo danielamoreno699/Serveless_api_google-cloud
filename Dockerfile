@@ -1,22 +1,24 @@
-# our base image
-FROM alpine:3.9
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
 
-# Install python and pip
-RUN apk add --update py3-pip
+# Set the working directory in the container
+WORKDIR /app
 
-# install Python modules needed by the Python app
-COPY requirements.txt /sentiment_analysis_textblob/
-RUN pip3 install --no-cache-dir -r /sentiment_analysis_textblob/requirements.txt
-RUN python3 -m textblob.download_corpora
+# Copy the application files into the container at /app
+COPY main.py /app/
+COPY requirements.txt /app/
 
+# Install the required packages
+RUN pip install --no-cache-dir -r requirements.txt
 
-# copy files required for the app to run
-#COPY app.py /sentiment_analysis_textblob/
-COPY main.py /sentiment_analysis_textblob/
+# Download NLTK data (vader_lexicon)
+RUN python -m nltk.downloader vader_lexicon
 
-# tell the port number the container should expose
+# Make port 5000 available to the world outside this container
 EXPOSE 5000
 
-# run the application
-#CMD ["python3", "/sentiment_analysis_textblob/app.py"]
-CMD ["python3", "/sentiment_analysis_textblob/main.py"]
+# Define environment variable
+ENV FLASK_APP=main.py
+
+# Run main.py when the container launches
+CMD ["flask", "run", "--host=0.0.0.0"]
