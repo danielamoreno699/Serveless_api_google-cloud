@@ -13,7 +13,6 @@ RUN python3 -m textblob.download_corpora
 # copy files required for the app to run
 #COPY app.py /sentiment_analysis_textblob/
 COPY main.py /sentiment_analysis_textblob/
-COPY templates/index.html /sentiment_analysis_textblob/templates/
 
 # tell the port number the container should expose
 EXPOSE 5000
