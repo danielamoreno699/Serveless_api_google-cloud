@@ -8,9 +8,6 @@ WORKDIR /app
 COPY main.py /app/
 COPY requirements.txt /app/
 
-# Install the required packages
-RUN pip install --no-cache-dir -r requirements.txt
-
 # Download NLTK data (vader_lexicon)
 RUN python -m nltk.downloader vader_lexicon
 
