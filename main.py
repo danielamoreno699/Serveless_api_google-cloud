@@ -19,7 +19,7 @@ def SentimentAnalyzer(text):
         response = 'This is neutral'
     return response
 
-
+#define route with query
 @app.route('/sentiment', methods=['GET'])
 def analyze_sentiment():
     text = request.args.get('q')  
