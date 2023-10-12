@@ -9,7 +9,7 @@ COPY main.py /app/
 COPY requirements.txt /app/
 
 # Download NLTK data (vader_lexicon)
-RUN python -m nltk.downloader vader_lexicon
+#RUN python -m nltk.downloader vader_lexicon
 
 # Make port 5000 available to the world outside this container
 EXPOSE 8080
